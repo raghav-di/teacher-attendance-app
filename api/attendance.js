@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const geolib = require('geolib');
 
-let conn = null; // keep connection cached
+let conn = null; // cached connection
 
 // Schema
 const attendanceSchema = new mongoose.Schema({
@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  // Connect to MongoDB (reuse connection if already open)
+  // Connect to MongoDB Atlas (reuse connection if already open)
   if (!conn) {
     conn = await mongoose.connect(process.env.MONGO_URI);
   }
