@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .ripple {
+            background-position: center;
+            transition: background 0.8s;
+        }
+        .ripple:active {
+            background-color: #60a5fa;
+            background-size: 100%;
+            transition: background 0s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center  p-6">
+    <nav class="w-full bg-white shadow-md py-4">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl font-bold text-gray-800">Teacher Attendance</h1>
+        </div>
+        <div class="absolute top-6 right-6 border-2 border-gray-300 rounded-full p-1">
+            <button id="login" onclick="toggleModal()" class="text-blue-600 hover:text-blue-800 border-2 border-blue-600 rounded-full w-10 h-10 flex items-center justify-center">
+                <p>~</p>
+            </button>
+        </div>
+    </nav>
+
+    <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Mark Attendance</h1>
+        <p id="userDisplay" class="text-gray-500 mb-8 italic">Please set your profile first</p>
+
+        <button id="checkInBtn" onclick="markAttendance()" class="ripple w-40 h-40 bg-blue-600 text-white rounded-full text-xl font-bold shadow-xl hover:bg-blue-700 focus:outline-none flex items-center justify-center mx-auto">
+            <span>CHECK IN</span>
+        </button>
+        
+        <p id="statusMsg" class="mt-6 text-sm font-medium text-gray-500"></p>
+    </div>
+
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+            <h2 class="text-xl font-bold mb-4">Teacher Profile</h2>
+            <input type="text" id="teacherName" placeholder="Full Name" class="w-full border-b-2 border-gray-300 p-2 mb-4 focus:border-blue-500 outline-none">
+            <input type="text" id="teacherId" placeholder="Teacher ID (e.g. T101)" class="w-full border-b-2 border-gray-300 p-2 mb-6 focus:border-blue-500 outline-none">
+            
+            <button onclick="saveProfile()" class="w-full bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition">SAVE DETAILS</button>
+            <button onclick="toggleModal()" class="w-full mt-4 text-gray-400 text-sm">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = "https://your-backend-on-render.com/api/attendance";
+        let isProcessing = false;
+
+        // Load data on start
+        window.onload = () => {
+            const name = localStorage.getItem('name');
+            const id = localStorage.getItem('id');
+            if(name && id) {
+                document.getElementById('userDisplay').innerText = `Logged in as: ${name}`;
+                document.getElementById('teacherName').value = name;
+                document.getElementById('teacherId').value = id;
+            }
+        };
+
+        function toggleModal() {
+            const modal = document.getElementById('profileModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('teacherName').value;
+            const id = document.getElementById('teacherId').value;
+            if(!name || !id) return alert("Please fill all fields");
+
+            localStorage.setItem('name', name);
+            localStorage.setItem('id', id);
+            document.getElementById('userDisplay').innerText = `Logged in as: ${name}`;
+            toggleModal();
+        }
+
+        async function markAttendance() {
+            const name = localStorage.getItem('name');
+            const id = localStorage.getItem('id');
+            const statusLabel = document.getElementById('statusMsg');
+            const btn = document.getElementById('checkInBtn');
+
+            if(!name || !id) return alert("Open profile (top right) to set your ID.");
+            if(isProcessing) return;
+
+            isProcessing = true;
+            statusLabel.innerText = "Locating...";
+            btn.classList.add('opacity-50');
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const payload = {
+                    teacherId: id,
+                    name: name,
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude
+                };
+
+                try {
+                    const response = await fetch(BACKEND_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const resData = await response.json();
+
+                    if(response.ok) {
+                        statusLabel.innerText = `✅ ${resData.message}`;
+                        statusLabel.className = "mt-6 text-sm font-medium text-green-600";
+                    } else {
+                        statusLabel.innerText = `❌ ${resData.message} (${resData.distance}m away)`;
+                        statusLabel.className = "mt-6 text-sm font-medium text-red-600";
+                    }
+                } catch (err) {
+                    statusLabel.innerText = "❌ Network error. Is backend live?";
+                } finally {
+                    isProcessing = false;
+                    btn.classList.remove('opacity-50');
+                }
+            }, (err) => {
+                alert("Location Error: Please enable GPS.");
+                isProcessing = false;
+                btn.classList.remove('opacity-50');
+            }, { enableHighAccuracy: true });
+        }
+        window.onload = () => {
+            const name = localStorage.getItem('name');
+            const id = localStorage.getItem('id');
+            if(name && id) {
+                document.getElementById('userDisplay').innerText = `Logged in as: ${name}`;
+                document.getElementById('teacherName').value = name;
+                document.getElementById('teacherId').value = id;
+                document.getElementById('login').innerHTML = `<p>${name.charAt(0).toUpperCase()}</p>`;
+            }
+        };
+    </script>
+</body>
+</html>
