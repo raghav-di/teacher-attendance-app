@@ -92,7 +92,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h1 className="text-2xl font-bold text-gray-800">Teacher Attendance</h1>
         </div>
-        <div>
+        <div className="">
           <Link href="/admin" className="text-blue-600 hover:text-blue-800">
             Admin Panel
           </Link>
