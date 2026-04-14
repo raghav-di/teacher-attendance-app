@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "/api/attendance";
 
@@ -89,6 +91,11 @@ export default function Home() {
       <nav className="w-full bg-white shadow-md py-4 relative">
         <div className="container mx-auto px-4">
           <h1 className="text-2xl font-bold text-gray-800">Teacher Attendance</h1>
+        </div>
+        <div>
+          <Link href="/admin" className="text-blue-600 hover:text-blue-800">
+            Admin Panel
+          </Link>
         </div>
         <div className="absolute top-2 right-6 border-2 border-gray-300 rounded-full p-1">
           <button

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 40, "column": 0}, "map": {"version":3,"sources":["file:///home/raghav/Documents/coding/appDev/AttendanceApp/TeacherAttendanceWebStand/app/api/admin/verify/route.js"],"sourcesContent":["export async function GET(req) {\n  const password = req.headers.get(\"x-admin-password\");\n  if (!password || password !== process.env.ADMIN_PASSWORD) {\n    return new Response(JSON.stringify({ valid: false }), { status: 401 });\n  }\n  return new Response(JSON.stringify({ valid: true }), { status: 200 });\n}\n"],"names":["GET","req","password","headers","get","process","env","ADMIN_PASSWORD","Response","JSON","stringify","valid","status"],"mappings":";;;;AAAO,eAAeA,IAAIC,GAAG;IAC3B,MAAMC,WAAWD,IAAIE,OAAO,CAACC,GAAG,CAAC;IACjC,IAAI,CAACF,YAAYA,aAAaG,QAAQC,GAAG,CAACC,cAAc,EAAE;QACxD,OAAO,IAAIC,SAASC,KAAKC,SAAS,CAAC;YAAEC,OAAO;QAAM,IAAI;YAAEC,QAAQ;QAAI;IACtE;IACA,OAAO,IAAIJ,SAASC,KAAKC,SAAS,CAAC;QAAEC,OAAO;IAAK,IAAI;QAAEC,QAAQ;IAAI;AACrE"}}]
+}
