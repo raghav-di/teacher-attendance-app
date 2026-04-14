@@ -92,7 +92,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h1 className="text-2xl font-bold text-gray-800">Teacher Attendance</h1>
         </div>
-        <div className="">
+        <div className="absolute top-11 left-6">
           <Link href="/admin" className="text-blue-600 hover:text-blue-800">
             Admin Panel
           </Link>
@@ -153,6 +153,26 @@ export default function Home() {
           </div>
         </div>
       )}
+      <br />
+      <br />
+      <br />
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center">
+        <h2>App About</h2>
+        <p className="mt-2 text-sm text-slate-600">
+          This app is built for the teachers to mark attendance by themselves.
+        </p>
+        <br />
+        <h2>User Guide</h2>
+        <p className="mt-2 text-sm text-slate-600">
+          1. Teachers can log in using their teacher ID and a password.
+          <br />
+          2. Once logged in, they can mark their attendance as "Present" with "check in" button.
+          <br />
+          3. The app will automatically capture the timestamp and location of the attendance.
+          <br />
+          4. Admins can log in to view attendance records filtered by date or teacher ID.
+        </p>
+      </div>
     </div>
   );
 }
