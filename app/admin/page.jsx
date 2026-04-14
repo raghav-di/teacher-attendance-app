@@ -118,9 +118,6 @@ export default function AdminPage() {
         <div className="mb-8 flex items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Admin Attendance</h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Use your admin password in `.env.local` as `ADMIN_PASSWORD`.
-            </p>
           </div>
           {loggedIn && (
             <button
@@ -192,7 +189,7 @@ export default function AdminPage() {
                       type="text"
                       value={teacherId}
                       onChange={(e) => setTeacherId(e.target.value)}
-                      placeholder="e.g. 420"
+                      placeholder="e.g. 01020323"
                       className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-200"
                     />
                   </label>
