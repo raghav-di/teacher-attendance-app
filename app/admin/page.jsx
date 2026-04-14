@@ -117,7 +117,7 @@ export default function AdminPage() {
       <div className="mx-auto max-w-6xl rounded-3xl bg-white p-8 shadow-xl ring-1 ring-slate-200">
         <div className="mb-8 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Admin Attendance</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Admin Pannel</h1>
           </div>
           {loggedIn && (
             <button
