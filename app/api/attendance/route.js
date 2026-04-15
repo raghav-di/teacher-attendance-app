@@ -14,8 +14,8 @@ const attendanceSchema = new mongoose.Schema({
 const Attendance = mongoose.models.Attendance || mongoose.model('Attendance', attendanceSchema);
 
 // College coordinates
-const COLLEGE_COORDS = { latitude: 28.731821, longitude: 77.114732 };
-const MAX_DISTANCE = 200; // meters
+const COLLEGE_COORDS = { latitude: 28.7196184, longitude: 77.0661762 };
+const MAX_DISTANCE = 500; // meters
 
 export async function POST(req) {
   // Connect to MongoDB Atlas (reuse connection if already open)
